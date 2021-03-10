@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgView"
+        android:src="@drawable/face"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filename..."
+        android:id="@+id/txtFileName"
+        android:layout_above="@id/btnByFile"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/btnByFile"
+        android:onClick="onTakeByFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New image - As File"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:id="@+id/btnBitmap"
+        android:onClick="onTakeByBitmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New image - As Bitmap"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
