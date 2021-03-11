@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Filename..."
-        android:id="@+id/txtFileName"
+        android:id="@+id/tvImageInfo"
         android:layout_above="@id/btnByFile"
         android:layout_centerHorizontal="true" />
 

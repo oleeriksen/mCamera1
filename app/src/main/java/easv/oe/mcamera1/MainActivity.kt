@@ -68,7 +68,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun onTakeByBitmap(view: View) {}
+    fun onTakeByBitmap(view: View) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_BITMAP)
+        } else Log.d(TAG, "camera app could NOT be started")
+
+    }
 
 
     /**
@@ -111,27 +119,20 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val mImage = findViewById<ImageView>(R.id.imgView)
-        val mFilename = findViewById<TextView>(R.id.txtFileName)
+        val tvImageInfo = findViewById<TextView>(R.id.tvImageInfo)
         when (requestCode) {
 
             CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_FILE ->
-                if (resultCode == RESULT_OK) {
-                        mImage.setImageURI(Uri.fromFile(mFile))
-                        mImage.setBackgroundColor(Color.RED)
-                      //mImage.setRotation(90);
-                    mFilename.text = mFile?.absolutePath + " - size = " + mFile?.length()
-                 } else handleOther(resultCode)
+                if (resultCode == RESULT_OK)
+                    showImageFromFile(mImage, tvImageInfo, mFile!!)
+                else handleOther(resultCode)
 
             CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_BITMAP ->
                 if (resultCode == RESULT_OK) {
-                        val extras = data!!.extras
-                        val imageBitmap = extras!!["data"] as Bitmap?
-                        Log.d(TAG, "Size of bitmap = " + imageBitmap!!.byteCount)
-                        mImage.setImageBitmap(imageBitmap)
-                        mImage.setLayoutParams(RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-                        mImage.setBackgroundColor(Color.RED)
-                        mFilename.setText("bitmap - size = " + imageBitmap.byteCount)
-                 } else handleOther(resultCode)
+                    val extras = data!!.extras
+                    val imageBitmap = extras!!["data"] as Bitmap?
+                    showImageFromBitmap(mImage, tvImageInfo, imageBitmap!!)
+                } else handleOther(resultCode)
         }
     }
 
@@ -142,12 +143,19 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    /*private fun showPictureTaken(f: File) {
-        mImage.setImageURI(Uri.fromFile(f))
-        mImage.setBackgroundColor(Color.RED)
+    private fun showImageFromFile(img: ImageView, txt: TextView, f: File) {
+        img.setImageURI(Uri.fromFile(f))
+        img.setBackgroundColor(Color.RED)
         //mImage.setRotation(90);
-        mFilename.setText(f.absolutePath + " - size = " + f.length())
-    }*/
+        txt.text = "File at:" + f.absolutePath + " - size = " + f.length()
 
+    }
 
+    private fun showImageFromBitmap(img: ImageView, txt: TextView, bmap: Bitmap) {
+        img.setImageBitmap(bmap)
+        //mImage.setLayoutParams(RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        img.setBackgroundColor(Color.RED)
+        txt.text = "bitmap - size = " + bmap.byteCount
+
+    }
 }
