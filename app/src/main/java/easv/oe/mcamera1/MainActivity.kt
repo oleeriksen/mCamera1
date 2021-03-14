@@ -79,21 +79,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    /**
-     * Checks if the app has the required permissions, and prompts the user with the ones missing.
-     */
+
+    //Checks if the app has the required permissions, and prompts the user with the ones missing.
     private fun checkPermissions() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
         val permissions = mutableListOf<String>()
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            permissions.add(Manifest.permission.CAMERA)
-        //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        //    permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        if ( ! isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE) ) permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if ( ! isGranted(Manifest.permission.CAMERA) ) permissions.add(Manifest.permission.CAMERA)
         if (permissions.size > 0)
             ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
     }
+
+
+    private fun isGranted(permission: String): Boolean =
+            ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 
     // return a new file with a timestamp name in a folder named [folder] in
@@ -146,7 +145,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    // show the image allocated in f in imageview img. Show meta data in txt
+    // show the image allocated in [f] in imageview [img]. Show meta data in [txt]
     private fun showImageFromFile(img: ImageView, txt: TextView, f: File) {
         img.setImageURI(Uri.fromFile(f))
         img.setBackgroundColor(Color.RED)
@@ -155,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // show the image bmap in the imageview img - and put meta data in txt
+    // show the image [bmap] in the imageview [img] - and put meta data in [txt]
     private fun showImageFromBitmap(img: ImageView, txt: TextView, bmap: Bitmap) {
         img.setImageBitmap(bmap)
         img.setLayoutParams(RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
