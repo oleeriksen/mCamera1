@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun onTakeByFile(view: View) {
-        mFile = getOutputMediaFile() // create a file to save the image
+        mFile = getOutputMediaFile("Camera01") // create a file to save the image
 
         if (mFile == null) {
             Toast.makeText(this, "Could not create file...", Toast.LENGTH_LONG).show()
@@ -96,9 +96,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getOutputMediaFile(): File? {
+    // return a new file with a timestamp name in a folder named [folder] in
+    // the external directory for pictures.
+    // Return null if the file cannot be created
+    private fun getOutputMediaFile(folder: String): File? {
         // in an emulated device you can see the external files in /sdcard/Android/data/<your app>.
-          val mediaStorageDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Camera01")
+          val mediaStorageDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), folder)
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -130,8 +133,8 @@ class MainActivity : AppCompatActivity() {
             CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_BITMAP ->
                 if (resultCode == RESULT_OK) {
                     val extras = data!!.extras
-                    val imageBitmap = extras!!["data"] as Bitmap?
-                    showImageFromBitmap(mImage, tvImageInfo, imageBitmap!!)
+                    val imageBitmap = extras!!["data"] as Bitmap
+                    showImageFromBitmap(mImage, tvImageInfo, imageBitmap)
                 } else handleOther(resultCode)
         }
     }
@@ -143,6 +146,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    // show the image allocated in f in imageview img. Show meta data in txt
     private fun showImageFromFile(img: ImageView, txt: TextView, f: File) {
         img.setImageURI(Uri.fromFile(f))
         img.setBackgroundColor(Color.RED)
@@ -151,9 +155,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // show the image bmap in the imageview img - and put meta data in txt
     private fun showImageFromBitmap(img: ImageView, txt: TextView, bmap: Bitmap) {
         img.setImageBitmap(bmap)
-        //mImage.setLayoutParams(RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        img.setLayoutParams(RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         img.setBackgroundColor(Color.RED)
         txt.text = "bitmap - size = " + bmap.byteCount
 

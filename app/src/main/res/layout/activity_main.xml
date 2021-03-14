@@ -25,7 +25,7 @@
         android:onClick="onTakeByFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New image - As File"
+        android:text="Take as File"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"/>
 
@@ -34,7 +34,7 @@
         android:onClick="onTakeByBitmap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New image - As Bitmap"
+        android:text="Take as Bitmap"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"/>
 
